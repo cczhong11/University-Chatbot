@@ -33,11 +33,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
             // one of these will have an interface and process it
             switch (activity.GetActivityType())
             {
-                case ActivityTypes.Message:
-                    var reply = activity.CreateReply();
-                    reply.Text = "ит╣х";
-                    var client = new ConnectorClient(new Uri(activity.ServiceUrl));
-                    await client.Conversations.ReplyToActivityAsync(reply);
+                case ActivityTypes.Message:                    
                     await Conversation.SendAsync(activity, () => new BasicLuisDialog());
                     break;
                 case ActivityTypes.ConversationUpdate:
