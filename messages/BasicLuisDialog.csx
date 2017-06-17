@@ -10,7 +10,7 @@ using Microsoft.Bot.Builder.Luis.Models;
 [Serializable]
 public class BasicLuisDialog : LuisDialog<object>
 {
-    public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute("52e6b5fb-ff51-4b98-9e5b-81f8ac236d64", "e927faef3c534ff0af810dfea1fc4ccc")))
+    public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
         
     }
@@ -24,7 +24,7 @@ public class BasicLuisDialog : LuisDialog<object>
 
     // Go to https://luis.ai and create a new intent, then train/publish your luis app.
     // Finally replace "MyIntent" with the name of your newly created intent in the following handler
-    [LuisIntent("people information")]
+    [LuisIntent("people.information")]
     public async Task MyIntent(IDialogContext context, LuisResult result)
     {
         await context.PostAsync($"You have reached the MyIntent intent. You said: {result.Query}"); //
