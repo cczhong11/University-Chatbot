@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Threading.Tasks;
 
 using Microsoft.Bot.Builder.Azure;
@@ -28,7 +28,7 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("people.information")]
     public async Task MyIntent(IDialogContext context, LuisResult result)
     {
-        await context.PostAsync($"ÄãÑ¯ÎÊµÄÉæ¼°ÈË"); //
+        await context.PostAsync($"ä½ è¯¢é—®çš„æ¶‰åŠäºº"); //
         context.Wait(MessageReceived);
     }
     
