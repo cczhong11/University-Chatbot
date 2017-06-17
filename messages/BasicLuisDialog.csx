@@ -28,13 +28,8 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("people.information")]
     public async Task MyIntent(IDialogContext context, LuisResult result)
     {
-        await context.PostAsync($"You have reached the MyIntent intent. You said: {result.Query}"); //
+        await context.PostAsync($"你询问的涉及人"); //
         context.Wait(MessageReceived);
     }
-    [LuisIntent("people")]
-    public async Task pIntent(IDialogContext context, LuisResult result)
-    {
-        await context.PostAsync($"You have reached the pIntent intent. You said: {result.Query}"); //
-        context.Wait(MessageReceived);
-    }
+    
 }
