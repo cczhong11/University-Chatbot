@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-namespace Bot_Application2.Dialogs
-{
-    public class FindPeople
+public class FindPeople
     {
         public FindPeople()
         {
@@ -37,4 +34,3 @@ namespace Bot_Application2.Dialogs
             return "不知道";
         }
     }
-}
