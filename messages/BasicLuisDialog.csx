@@ -7,6 +7,7 @@ using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 
 // For more information about this template visit http://aka.ms/azurebots-csharp-luis
+
 [Serializable]
 public class BasicLuisDialog : LuisDialog<object>
 {
@@ -28,7 +29,38 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("people.information")]
     public async Task MyIntent(IDialogContext context, LuisResult result)
     {
-        await context.PostAsync($"你询问的涉及人"); //
+        string thisjob, thisschool;
+        EntityRecommendation job,school;
+        if (result.TryFindEntity("职位", out job))
+        {
+            thisjob = job.Entity;
+        }
+        else
+        {
+            thisjob = "院长";
+        }
+    
+        if (result.TryFindEntity("学校", out school))
+        {
+            thisschool = school.Entity;
+        }
+        else
+        {
+            thisschool = "信息科学与工程学院";
+        }
+        await context.PostAsync(FindPeople.getPeople(thisschool,thisjob)); //
+        context.Wait(MessageReceived);
+    }
+    [LuisIntent("scores")]
+    public async Task fsxIntent(IDialogContext context, LuisResult result)
+    {
+        await context.PostAsync($"你询问的涉及分数线"); //
+        context.Wait(MessageReceived);
+    }
+    [LuisIntent("专业")]
+    public async Task zyIntent(IDialogContext context, LuisResult result)
+    {
+        await context.PostAsync($"你询问的涉及专业"); //
         context.Wait(MessageReceived);
     }
     
