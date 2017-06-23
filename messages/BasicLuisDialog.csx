@@ -1,4 +1,5 @@
-﻿using System;
+﻿#load "FindPeople.csx"
+using System;
 using System.Threading.Tasks;
 
 using Microsoft.Bot.Builder.Azure;
