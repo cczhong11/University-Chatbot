@@ -6,7 +6,9 @@ public class FindPeople
     {
         public FindPeople()
         {
-            string[] lines = System.IO.File.ReadAllLines("seu领导.txt");
+            string file2 = "seu领导.txt";
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, file2);
+            string[] lines = System.IO.File.ReadAllLines(path);
 
             // Display the file contents by using a foreach loop.
             System.Console.WriteLine("Contents of WriteLines2.txt = ");
