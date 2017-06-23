@@ -12,7 +12,7 @@ using Microsoft.Bot.Builder.Luis.Models;
 [Serializable]
 public class BasicLuisDialog : LuisDialog<object>
 {
-    public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey")),domain: "southeastasia.api.cognitive.microsoft.com",staging: true))
+    public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"),domain: "southeastasia.api.cognitive.microsoft.com",staging: true)))
     {
         
     }
