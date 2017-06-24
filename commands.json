@@ -4,7 +4,12 @@
       "fileName": "cmd.exe",
       "workingDirectory": ".",
       "arguments": "/c debughost.cmd"
+    },
+    "debughost -296604488": {
+      "fileName": "cmd.exe",
+      "workingDirectory": ".",
+      "arguments": "/c debughost.cmd"
     }
   },
-  "-vs-binding": { "ProjectOpened": [ "debughost" ] }
+  "-vs-binding":{"Clean":["debughost -296604488"],"ProjectOpened":["debughost"]}
 }

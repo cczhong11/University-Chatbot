@@ -5,7 +5,8 @@ using System;
 using System.Net;
 using System.Threading;
 using Newtonsoft.Json;
-
+using System.Data;
+using System.Data.SqlClient;
 using Microsoft.Bot.Builder.Azure;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
@@ -21,19 +22,20 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
         string jsonContent = await req.Content.ReadAsStringAsync();
         var activity = JsonConvert.DeserializeObject<Activity>(jsonContent);
         
+
         // authenticate incoming request and add activity.ServiceUrl to MicrosoftAppCredentials.TrustedHostNames
         // if request is authenticated
-        if (!await BotService.Authenticator.TryAuthenticateAsync(req, new [] {activity}, CancellationToken.None))
+        if (!await BotService.Authenticator.TryAuthenticateAsync(req, new[] { activity }, CancellationToken.None))
         {
             return BotAuthenticator.GenerateUnauthorizedResponse(req);
         }
-    
+
         if (activity != null)
         {
             // one of these will have an interface and process it
             switch (activity.GetActivityType())
             {
-                case ActivityTypes.Message:                    
+                case ActivityTypes.Message:
                     await Conversation.SendAsync(activity, () => new BasicLuisDialog());
                     break;
                 case ActivityTypes.ConversationUpdate:
@@ -65,5 +67,5 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
             }
         }
         return req.CreateResponse(HttpStatusCode.Accepted);
-    }    
+    }
 }

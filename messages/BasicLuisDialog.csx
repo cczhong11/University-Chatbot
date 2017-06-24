@@ -1,17 +1,19 @@
 ﻿#load "FindPeople.csx"
 using System;
 using System.Threading.Tasks;
-
+using System.Data;
+using System.Data.SqlClient;
 using Microsoft.Bot.Builder.Azure;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
-
+using System.Text;
 // For more information about this template visit http://aka.ms/azurebots-csharp-luis
 
 [Serializable]
 public class BasicLuisDialog : LuisDialog<object>
 {
+    
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute("52e6b5fb-ff51-4b98-9e5b-81f8ac236d64", "e927faef3c534ff0af810dfea1fc4ccc", domain: "southeastasia.api.cognitive.microsoft.com",staging: true)))
     {
         
@@ -49,7 +51,49 @@ public class BasicLuisDialog : LuisDialog<object>
         {
             thisschool = "信息科学与工程学院";
         }
-        await context.PostAsync(FindPeople.getPeople(thisschool,thisjob)); //
+        string result0 = "";
+        
+        try
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.DataSource = "aaabop.database.windows.net";
+            builder.UserID = "tczhong";
+            builder.Password = "!Loveyou";
+            builder.InitialCatalog = "aaabopsql";                            
+        
+            using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+            {
+                connection.Open();
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT name2 from bop where name = N'");
+                sb.Append(thisschool);
+                sb.Append("' and relation LIKE N'%");
+                sb.Append(thisjob);
+                sb.Append("%'");
+                String sql = sb.ToString();
+                
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        result0 = reader.GetString(0);
+
+                    }
+                }
+                if (result0 == "")
+                {
+                    result0 = "不知道";
+                }
+
+            }
+        }
+        catch (SqlException e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+        await context.PostAsync(result0); //
         context.Wait(MessageReceived);
     }
     [LuisIntent("scores")]
