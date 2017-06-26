@@ -125,10 +125,11 @@ public class BasicLuisDialog : LuisDialog<object>
             thisschool = "东南大学";
         }
         string result0 = "";
-        if(thisschool[0]!='东')
+        /*
+        if (thisschool[0]!='东')
         {
             thisschool = "东南大学"+thisschool;
-        }
+        }*/
         try
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
