@@ -102,6 +102,76 @@ public class BasicLuisDialog : LuisDialog<object>
         await context.PostAsync($"你询问的涉及分数线"); //
         context.Wait(MessageReceived);
     }
+    [LuisIntent("数量")]
+    public async Task slIntent(IDialogContext context, LuisResult result)
+    {
+        string thisjob, thisschool;
+        EntityRecommendation resource,school;
+        if (result.TryFindEntity("资源", out resource))
+        {
+            thisjob = resource.Entity;
+        }
+        else
+        {
+            thisjob = "院士";
+        }
+    
+        if (result.TryFindEntity("学校", out school))
+        {
+            thisschool = school.Entity;
+        }
+        else
+        {
+            thisschool = "东南大学";
+        }
+        string result0 = "";
+        if(thisschool[0]!='东')
+        {
+            thisschool = "东南大学"+thisschool;
+        }
+        try
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.DataSource = "aaabop.database.windows.net";
+            builder.UserID = "tczhong";
+            builder.Password = "!Loveyou";
+            builder.InitialCatalog = "aaabopsql";                            
+        
+            using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+            {
+                connection.Open();
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT name2 from bop where name = N'");
+                sb.Append(thisschool);
+                sb.Append("' and relation LIKE N'%");
+                sb.Append(thisjob);
+                sb.Append("%'");
+                String sql = sb.ToString();
+                
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        result0 = reader.GetString(0);
+
+                    }
+                }
+                if (result0 == "")
+                {
+                    result0 = "不知道";
+                }
+
+            }
+        }
+        catch (SqlException e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+        await context.PostAsync(result0); //
+        context.Wait(MessageReceived);
+    }
     [LuisIntent("专业")]
     public async Task zyIntent(IDialogContext context, LuisResult result)
     {
