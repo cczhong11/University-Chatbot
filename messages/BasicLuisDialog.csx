@@ -13,6 +13,7 @@ using System.Text;
 [Serializable]
 public class BasicLuisDialog : LuisDialog<object>
 {
+
     
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute("52e6b5fb-ff51-4b98-9e5b-81f8ac236d64", "e927faef3c534ff0af810dfea1fc4ccc", domain: "southeastasia.api.cognitive.microsoft.com",staging: true)))
     {
@@ -49,7 +50,7 @@ public class BasicLuisDialog : LuisDialog<object>
         }
         else
         {
-            thisschool = "信息科学与工程学院";
+            thisschool = "东南大学";
         }
         string result0 = "";
         
@@ -110,6 +111,10 @@ public class BasicLuisDialog : LuisDialog<object>
         if (result.TryFindEntity("资源", out resource))
         {
             thisjob = resource.Entity;
+            if(thisjob == "学院")
+            {
+                thisjob = "院（系）";
+            }
         }
         else
         {
@@ -179,5 +184,91 @@ public class BasicLuisDialog : LuisDialog<object>
         await context.PostAsync($"你询问的涉及专业"); //
         context.Wait(MessageReceived);
     }
-    
+    [LuisIntent("时间")]
+    public async Task sjIntent(IDialogContext context, LuisResult result)
+    {
+        string thisschool,result0;
+        EntityRecommendation school;
+        if (result.TryFindEntity("学院", out school))
+        {
+            thisschool = school.Entity;
+            if(thisschool == "信息科学与工程学院")
+            {
+                result0 = "1923年";
+            }
+            else
+            {
+                result0 = "1960年";
+            }
+        }
+        else
+        {
+            result0 = "1902年";
+        }
+        await context.PostAsync(result0); //
+        context.Wait(MessageReceived);
+    }
+    [LuisIntent("校标")]
+    public async Task xbIntent(IDialogContext context, LuisResult result)
+    {
+        string thissymbol ;
+        EntityRecommendation resource;
+        if (result.TryFindEntity("标志", out resource))
+        {
+            thissymbol = resource.Entity;
+        }
+        else
+        {
+            thissymbol = "校训";
+        }
+
+        
+        string result0 = "";
+        
+        try
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.DataSource = "aaabop.database.windows.net";
+            builder.UserID = "tczhong";
+            builder.Password = "!Loveyou";
+            builder.InitialCatalog = "aaabopsql";
+
+            using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+            {
+                connection.Open();
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT name2 from bop where relation = N'");
+                sb.Append(thissymbol);               
+                sb.Append("'");
+                String sql = sb.ToString();
+                try
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            reader.Read();
+
+                            result0 = reader.GetString(0);
+
+                        }
+                    }
+                }
+                catch {
+                    if (result0 == "")
+                    {
+                        result0 = "不知道";
+                    }
+                }
+                
+
+            }
+        }
+        catch (SqlException e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+        await context.PostAsync(result0); //
+        context.Wait(MessageReceived);
+    }
 }
