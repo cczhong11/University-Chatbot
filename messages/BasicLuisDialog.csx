@@ -308,7 +308,14 @@ public class BasicLuisDialog : LuisDialog<object>
                 connection.Open();
                 StringBuilder sb = new StringBuilder();
                 sb.Append("SELECT name2 from bop where name = N'");
-                sb.Append(thissymbol);
+                if (thisschool != "主页")
+                {
+                    sb.Append(thisschool);
+                }
+                else
+                {
+                    sb.Append(thissymbol);
+                }                
                 sb.Append("' and intent = N'网址'");
                 String sql = sb.ToString();
                 try
