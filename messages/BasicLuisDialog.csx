@@ -271,4 +271,76 @@ public class BasicLuisDialog : LuisDialog<object>
         await context.PostAsync(result0); //
         context.Wait(MessageReceived);
     }
+    [LuisIntent("网址")]
+    public async Task wzIntent(IDialogContext context, LuisResult result)
+    {
+        string thissymbol,thisschool;
+        EntityRecommendation resource,school;
+        if (result.TryFindEntity("网站", out resource))
+        {
+            thissymbol = resource.Entity;
+        }
+        else
+        {
+            thissymbol = "主页";
+        }
+        if (result.TryFindEntity("学院", out school))
+        {
+            thisschool = school.Entity;
+        }
+        else
+        {
+            thisschool = "主页";
+        }
+
+        string result0 = "";
+
+        try
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.DataSource = "aaabop.database.windows.net";
+            builder.UserID = "tczhong";
+            builder.Password = "!Loveyou";
+            builder.InitialCatalog = "aaabopsql";
+
+            using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+            {
+                connection.Open();
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT name2 from bop where name = N'");
+                sb.Append(thissymbol);
+                sb.Append("' and intent = N'网址'");
+                String sql = sb.ToString();
+                try
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            reader.Read();
+
+                            result0 = reader.GetString(0);
+
+                        }
+                    }
+                }
+                catch
+                {
+                    if (result0 == "")
+                    {
+                        result0 = "不知道";
+                    }
+                }
+
+
+            }
+        }
+        catch (SqlException e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+        await context.PostAsync(result0); //
+        context.Wait(MessageReceived);
+    }
+
 }
