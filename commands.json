@@ -19,6 +19,11 @@
       "fileName": "cmd.exe",
       "workingDirectory": ".",
       "arguments": "/c debughost.cmd"
+    },
+    "debughost 1536859193": {
+      "fileName": "cmd.exe",
+      "workingDirectory": ".",
+      "arguments": "/c debughost.cmd"
     }
   },
   "-vs-binding": {
