@@ -22,7 +22,7 @@ public class BasicLuisDialog : LuisDialog<object>
     }
     public string similar_name(string schoolname, string intent)
     {
-        List<string> cs = new List<string>{ "计算计系", "计算计学院","计院","计算机","计算机科学与技术系" };
+        List<string> cs = new List<string>{ "计算机系", "计算机学院","计院","计算机","计算机科学与技术系" };
         List<string> radio = new List<string> { "信息学院", "信息", "无线电", "四系" };
         if (cs.Contains(schoolname))
         {
