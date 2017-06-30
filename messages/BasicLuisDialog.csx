@@ -54,78 +54,95 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("people.information")]
     public async Task MyIntent(IDialogContext context, LuisResult result)
     {
-        string thisjob, thisschool;
-        EntityRecommendation job,school;
-        if (result.TryFindEntity("职位", out job))
-        {
-            thisjob = job.Entity;
-            if(thisjob=="系主任")
+        string thisjob="", thisschool="";
+        EntityRecommendation job, school;
+        string result0 = "";
+        if (result.Query.Contains("上一任呢")) {
+            string lastQ = string.Empty;
+            context.ConversationData.TryGetValue<string>("lasten", out lastQ);
+            if (lastQ.Contains("校长"))
             {
-                thisjob = "院长";
-            }
-        }
-        else
-        {
-            thisjob = "院长";
-        }
-    
-        if (result.TryFindEntity("学校", out school))
-        {
-            thisschool = school.Entity;
-        }
-        else
-        {
-            if (result.TryFindEntity("学院", out school))
-            {
-                thisschool = similar_name(school.Entity,"people.information");
+                result0 = "易红";
             }
             else
             {
-                thisschool = "东南大学";
+                result0 = "没有在官网找到此信息";
             }
         }
-        string result0 = "";
-        
-        try
-        {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            builder.DataSource = "aaabop.database.windows.net";
-            builder.UserID = "tczhong";
-            builder.Password = "!Loveyou";
-            builder.InitialCatalog = "aaabopsql";                            
-        
-            using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+        else {
+            
+            if (result.TryFindEntity("职位", out job))
             {
-                connection.Open();
-                StringBuilder sb = new StringBuilder();
-                sb.Append("SELECT name2 from bop where name = N'");
-                sb.Append(thisschool);
-                sb.Append("' and relation LIKE N'%");
-                sb.Append(thisjob);
-                sb.Append("%'");
-                String sql = sb.ToString();
-                
-                using (SqlCommand command = new SqlCommand(sql, connection))
+                thisjob = job.Entity;
+                if (thisjob == "系主任")
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    thisjob = "院长";
+                }
+            }
+            else
+            {
+                thisjob = "院长";
+            }
+
+            if (result.TryFindEntity("学校", out school))
+            {
+                thisschool = school.Entity;
+            }
+            else
+            {
+                if (result.TryFindEntity("学院", out school))
+                {
+                    thisschool = similar_name(school.Entity, "people.information");
+                }
+                else
+                {
+                    thisschool = "东南大学";
+                }
+            }
+            
+
+            try
+            {
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+                builder.DataSource = "aaabop.database.windows.net";
+                builder.UserID = "tczhong";
+                builder.Password = "!Loveyou";
+                builder.InitialCatalog = "aaabopsql";
+
+                using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+                {
+                    connection.Open();
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("SELECT name2 from bop where name = N'");
+                    sb.Append(thisschool);
+                    sb.Append("' and relation LIKE N'%");
+                    sb.Append(thisjob);
+                    sb.Append("%'");
+                    String sql = sb.ToString();
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        reader.Read();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            reader.Read();
 
-                        result0 = reader.GetString(0);
+                            result0 = reader.GetString(0);
 
+                        }
                     }
-                }
-                if (result0 == "")
-                {
-                    result0 = "不知道";
-                }
+                    if (result0 == "")
+                    {
+                        result0 = "不知道";
+                    }
 
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
             }
         }
-        catch (SqlException e)
-        {
-            Console.WriteLine(e.ToString());
-        }
+        context.ConversationData.SetValue("lasten", thisjob);
         await context.PostAsync(result0); //
         context.Wait(MessageReceived);
     }
@@ -172,6 +189,7 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("数量")]
     public async Task slIntent(IDialogContext context, LuisResult result)
     {
+        
         string thisjob, thisschool;
         EntityRecommendation resource,school;
         if (result.TryFindEntity("资源", out resource))
