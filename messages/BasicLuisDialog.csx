@@ -446,15 +446,15 @@ public class BasicLuisDialog : LuisDialog<object>
         }
         else
         {
-            last = context.ConversationData.TryGetValue<string>("lastschool", out last);
-            if (last!="")
+            if (context.ConversationData.TryGetValue<string>("lastschool", out last))
             {
                 thissymbol = similar_name(last,"电话");
             }
             else
             {
                 thissymbol = "校长办公室";
-            }            
+            }
+            
         }
         if (result.TryFindEntity("学院", out school))
         {
