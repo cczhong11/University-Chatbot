@@ -143,6 +143,7 @@ public class BasicLuisDialog : LuisDialog<object>
             }
         }
         context.ConversationData.SetValue("lasten", thisjob);
+        context.ConversationData.SetValue("lastschool", thisschool);
         await context.PostAsync(result0); //
         context.Wait(MessageReceived);
     }
@@ -437,7 +438,7 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("电话")]
     public async Task dhIntent(IDialogContext context, LuisResult result)
     {
-        string thissymbol, thisschool;
+        string thissymbol, thisschool, last;
         EntityRecommendation resource, school;
         if (result.TryFindEntity("学校单位", out resource))
         {
@@ -445,7 +446,15 @@ public class BasicLuisDialog : LuisDialog<object>
         }
         else
         {
-            thissymbol = "校长办公室";
+            last = context.ConversationData.TryGetValue<string>("lastschool", out last);
+            if (last!="")
+            {
+                thissymbol = similar_name(last,"电话");
+            }
+            else
+            {
+                thissymbol = "校长办公室";
+            }            
         }
         if (result.TryFindEntity("学院", out school))
         {
