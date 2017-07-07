@@ -45,7 +45,7 @@ public class BasicLuisDialog : LuisDialog<object>
     public async Task NoneIntent(IDialogContext context, LuisResult result)
     {        
         Console.WriteLine(result.Query);
-        await context.PostAsync($"You have reached the none intent. You said: {result.Query}"); //
+        await context.PostAsync($"...不清楚诶"); //
         context.Wait(MessageReceived);
     }
 
@@ -124,12 +124,17 @@ public class BasicLuisDialog : LuisDialog<object>
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            reader.Read();
+                            try{
+                                reader.Read();
 
-                            result0 = reader.GetString(0);
-
+                                result0 = reader.GetString(0);
+                                }
+                            catch {
+                            
+                            result0 = "不知道";
+                           
+                            }
                         }
-                    }
                     if (result0 == "")
                     {
                         result0 = "不知道";
@@ -243,10 +248,16 @@ public class BasicLuisDialog : LuisDialog<object>
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        reader.Read();
+                       try{
+                                reader.Read();
 
-                        result0 = reader.GetString(0);
-
+                                result0 = reader.GetString(0);
+                                }
+                            catch {
+                            
+                            result0 = "不知道";
+                           
+                            }
                     }
                 }
                 if (result0 == "")
@@ -332,9 +343,16 @@ public class BasicLuisDialog : LuisDialog<object>
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            reader.Read();
+                            try{
+                                reader.Read();
 
-                            result0 = reader.GetString(0);
+                                result0 = reader.GetString(0);
+                                }
+                            catch {
+                            
+                            result0 = "不知道";
+                           
+                            }
 
                         }
                     }
@@ -410,10 +428,16 @@ public class BasicLuisDialog : LuisDialog<object>
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            reader.Read();
+                            try{
+                                reader.Read();
 
-                            result0 = reader.GetString(0);
-
+                                result0 = reader.GetString(0);
+                                }
+                            catch {
+                            
+                            result0 = "不知道";
+                           
+                            }
                         }
                     }
                 }
@@ -447,7 +471,7 @@ public class BasicLuisDialog : LuisDialog<object>
         else
         {
             if (context.ConversationData.TryGetValue<string>("lastschool", out last))
-            {
+            {                
                 thissymbol = similar_name(last,"电话");
             }
             else
@@ -490,16 +514,23 @@ public class BasicLuisDialog : LuisDialog<object>
                 }
                 sb.Append("' and intent = N'电话'");
                 String sql = sb.ToString();
+                Console.WriteLine(sql);
                 try
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            reader.Read();
+                           try{
+                                reader.Read();
 
-                            result0 = reader.GetString(0);
-
+                                result0 = reader.GetString(0);
+                                }
+                            catch {
+                            
+                            result0 = "不知道";
+                           
+                            }
                         }
                     }
                 }
