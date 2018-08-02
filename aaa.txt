@@ -1,6 +1,0 @@
- context.ConversationData.SetValue("lastquestion", questionIdToUser);
-
-        string lastQ = string.Empty;
-        context.ConversationData.TryGetValue<string>("lastquestion", out lastQ);
-
-        await context.PostAsync($"Last question: " + lastQ);
