@@ -15,7 +15,7 @@ public class BasicLuisDialog : LuisDialog<object>
 {
 
     
-    public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute("52e6b5fb-ff51-4b98-9e5b-81f8ac236d64", "e927faef3c534ff0af810dfea1fc4ccc", domain: "southeastasia.api.cognitive.microsoft.com",staging: true)))
+    public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute("xxxxxxxxxxxxxxxxxxxxxxxxx", domain: "southeastasia.api.cognitive.microsoft.com",staging: true)))
     {
         
         
@@ -106,7 +106,7 @@ public class BasicLuisDialog : LuisDialog<object>
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
                 builder.DataSource = "aaabop.database.windows.net";
                 builder.UserID = "tczhong";
-                builder.Password = "!Loveyou";
+                builder.Password = "xxxxxxx";
                 builder.InitialCatalog = "aaabopsql";
 
                 using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
@@ -220,17 +220,13 @@ public class BasicLuisDialog : LuisDialog<object>
             thisschool = "东南大学";
         }
         string result0 = "";
-        /*
-        if (thisschool[0]!='东')
-        {
-            thisschool = "东南大学"+thisschool;
-        }*/
+
         try
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
             builder.DataSource = "aaabop.database.windows.net";
             builder.UserID = "tczhong";
-            builder.Password = "!Loveyou";
+            builder.Password = "xxxxxx";
             builder.InitialCatalog = "aaabopsql";                            
         
             using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
@@ -326,7 +322,7 @@ public class BasicLuisDialog : LuisDialog<object>
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
             builder.DataSource = "aaabop.database.windows.net";
             builder.UserID = "tczhong";
-            builder.Password = "!Loveyou";
+            builder.Password = "xxxxx";
             builder.InitialCatalog = "aaabopsql";
 
             using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
@@ -404,7 +400,7 @@ public class BasicLuisDialog : LuisDialog<object>
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
             builder.DataSource = "aaabop.database.windows.net";
             builder.UserID = "tczhong";
-            builder.Password = "!Loveyou";
+            builder.Password = "xxxxxxx";
             builder.InitialCatalog = "aaabopsql";
 
             using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
@@ -496,7 +492,7 @@ public class BasicLuisDialog : LuisDialog<object>
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
             builder.DataSource = "aaabop.database.windows.net";
             builder.UserID = "tczhong";
-            builder.Password = "!Loveyou";
+            builder.Password = "!xxxxxx";
             builder.InitialCatalog = "aaabopsql";
 
             using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
